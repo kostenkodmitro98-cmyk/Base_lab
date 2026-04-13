@@ -1,25 +1,25 @@
--- Очищуємо все перед створенням, щоб не було помилок
+-- Очищуємо базу перед створенням, щоб уникнути конфліктів
 DROP TABLE IF EXISTS PlayerMatchStat CASCADE;
 DROP TABLE IF EXISTS PlayerPhones CASCADE;
 DROP TABLE IF EXISTS Player CASCADE;
 DROP TABLE IF EXISTS Team CASCADE;
 DROP TABLE IF EXISTS Coach CASCADE;
 
--- 1. Створюємо таблицю тренерів. Вона незалежна.
+-- 1. Таблиця тренерів
 CREATE TABLE Coach (
     CoachID SERIAL PRIMARY KEY,
     FirstName VARCHAR(50) NOT NULL,
     LastName VARCHAR(50) NOT NULL
 );
 
--- 2. Таблиця команд. Тут є зв'язок з тренером.
+-- 2. Таблиця команд
 CREATE TABLE Team (
     TeamID SERIAL PRIMARY KEY,
     Name VARCHAR(100) NOT NULL UNIQUE,
     CoachID INTEGER REFERENCES Coach(CoachID) ON DELETE SET NULL
 );
 
--- 3. Таблиця гравців. Кожен гравець прив'язаний до команди через TeamID.
+-- 3. Таблиця гравців
 CREATE TABLE Player (
     PlayerID SERIAL PRIMARY KEY,
     TeamID INTEGER NOT NULL REFERENCES Team(TeamID) ON DELETE CASCADE,
@@ -28,18 +28,18 @@ CREATE TABLE Player (
     Position VARCHAR(50) NOT NULL
 );
 
--- 4. Окрема таблиця для телефонів (це вимога 1NF).
+-- 4. Таблиця контактів (Телефони)
 CREATE TABLE PlayerPhones (
     PhoneID SERIAL PRIMARY KEY,
     PlayerID INTEGER NOT NULL REFERENCES Player(PlayerID) ON DELETE CASCADE,
     PhoneNumber VARCHAR(20) NOT NULL
 );
 
--- 5. Статистика матчів. Тут тільки посилання на гравців та бали (це 3NF).
+-- 5. Таблиця статистики
 CREATE TABLE PlayerMatchStat (
     StatID SERIAL PRIMARY KEY,
     PlayerID INTEGER NOT NULL REFERENCES Player(PlayerID) ON DELETE CASCADE,
-    MatchID INTEGER NOT NULL, -- ID матчу з таблиці Match
+    MatchID INTEGER NOT NULL,
     PointsScored INTEGER DEFAULT 0 CHECK (PointsScored >= 0),
     UNIQUE (PlayerID, MatchID)
 );
