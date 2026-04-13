@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model coach {
+  coachid   Int     @id @default(autoincrement())
+  firstname String  @db.VarChar(50)
+  lastname  String  @db.VarChar(50)
+  isactive  Boolean @default(true) //Додано нове поле
+  team      team[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model match {
+  matchid    Int        @id @default(autoincrement())
+  hometeamid Int
+  awayteamid Int
+  venueid    Int?
+  matchdate  DateTime   @db.Date
+  venue      venue?     @relation(fields: [venueid], references: [venueid], onDelete: NoAction, onUpdate: NoAction)
+  matchset   matchset[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model matchset {
+  setid     Int   @id @default(autoincrement())
+  matchid   Int
+  setnumber Int?
+  homescore Int?
+  awayscore Int?
+  match     match @relation(fields: [matchid], references: [matchid], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([matchid, setnumber])
+}
+
+model player {
+  playerid        Int               @id @default(autoincrement())
+  teamid          Int
+  firstname       String            @db.VarChar(50)
+  lastname        String            @db.VarChar(50)
+  position        String            @db.VarChar(50)
+  team            team              @relation(fields: [teamid], references: [teamid], onDelete: Cascade, onUpdate: NoAction)
+  playermatchstat playermatchstat[]
+  playerphones    playerphones[]
+  award           award[]           //Додано зв'язок з новою таблицею
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model playermatchstat {
+  statid       Int    @id @default(autoincrement())
+  playerid     Int
+  matchid      Int
+  pointsscored Int?   @default(0)
+  player       player @relation(fields: [playerid], references: [playerid], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([playerid, matchid])
+}
+
+model playerphones {
+  phoneid     Int    @id @default(autoincrement())
+  playerid    Int
+  phonenumber String @db.VarChar(20)
+  player      player @relation(fields: [playerid], references: [playerid], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model team {
+  teamid  Int      @id @default(autoincrement())
+  name    String   @unique @db.VarChar(100)
+  coachid Int?
+  player  player[]
+  coach   coach?   @relation(fields: [coachid], references: [coachid], onUpdate: NoAction)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model venue {
+  venueid  Int      @id @default(autoincrement())
+  name     String   @db.VarChar(100)
+  city     String   @db.VarChar(100)
+  // Рядок capacity видалили
+  match    match[]
+}
+
+model award {
+  awardid   Int    @id @default(autoincrement())
+  title     String @db.VarChar(100)
+  year      Int
+  playerid  Int
+  player    player @relation(fields: [playerid], references: [playerid], onDelete: Cascade, onUpdate: NoAction)
+}
