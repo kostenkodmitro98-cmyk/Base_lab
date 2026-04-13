@@ -4,7 +4,7 @@
 
 ## 1. Аналіз «поганої» таблиці та аномалій
 
-Спочатку я створив одну велику таблицю `Tournament_Data_Draft`, куди записав усе підряд. Це виявилося дуже незручно.
+Спочатку я створив одну велику таблицю `Tournament_Data_Draft`, куди записав усе підряд.
 
 **Початкова структура:**
 `Tournament_Data_Draft (MatchID, MatchDate, Venue, PlayerID, FirstName, LastName, Position, ContactPhones, TeamID, TeamName, CoachName, PointsScored)`
