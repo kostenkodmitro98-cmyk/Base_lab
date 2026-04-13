@@ -7,7 +7,7 @@
 * `Team` (PK `TeamID`) та `Coach` (PK `CoachID`).
 * `Player` (PK `PlayerID`, FK `TeamID`).
 * `Match` (PK `MatchID`, FK `HomeTeamID`, FK `AwayTeamID`, FK `VenueID`).
-* `PlayerMatchStat` (PK `StatID`, FK `PlayerID`, FK `MatchID`) — реалізує зв'язок багато-до-багатьох для статистики.
+* `PlayerMatchStat` (PK `StatID`, FK `PlayerID`, FK `MatchID`) - реалізує зв'язок багато-до-багатьох для статистики.
 
 ## 1. Агрегація та групування
 
