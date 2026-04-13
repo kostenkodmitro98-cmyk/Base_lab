@@ -1,4 +1,3 @@
--- CreateTable
 CREATE TABLE "coach" (
     "coachid" SERIAL NOT NULL,
     "firstname" VARCHAR(50) NOT NULL,
@@ -8,7 +7,6 @@ CREATE TABLE "coach" (
     CONSTRAINT "coach_pkey" PRIMARY KEY ("coachid")
 );
 
--- CreateTable
 CREATE TABLE "match" (
     "matchid" SERIAL NOT NULL,
     "hometeamid" INTEGER NOT NULL,
@@ -19,7 +17,6 @@ CREATE TABLE "match" (
     CONSTRAINT "match_pkey" PRIMARY KEY ("matchid")
 );
 
--- CreateTable
 CREATE TABLE "matchset" (
     "setid" SERIAL NOT NULL,
     "matchid" INTEGER NOT NULL,
@@ -30,7 +27,6 @@ CREATE TABLE "matchset" (
     CONSTRAINT "matchset_pkey" PRIMARY KEY ("setid")
 );
 
--- CreateTable
 CREATE TABLE "player" (
     "playerid" SERIAL NOT NULL,
     "teamid" INTEGER NOT NULL,
@@ -41,7 +37,6 @@ CREATE TABLE "player" (
     CONSTRAINT "player_pkey" PRIMARY KEY ("playerid")
 );
 
--- CreateTable
 CREATE TABLE "playermatchstat" (
     "statid" SERIAL NOT NULL,
     "playerid" INTEGER NOT NULL,
@@ -51,7 +46,6 @@ CREATE TABLE "playermatchstat" (
     CONSTRAINT "playermatchstat_pkey" PRIMARY KEY ("statid")
 );
 
--- CreateTable
 CREATE TABLE "playerphones" (
     "phoneid" SERIAL NOT NULL,
     "playerid" INTEGER NOT NULL,
@@ -60,7 +54,6 @@ CREATE TABLE "playerphones" (
     CONSTRAINT "playerphones_pkey" PRIMARY KEY ("phoneid")
 );
 
--- CreateTable
 CREATE TABLE "team" (
     "teamid" SERIAL NOT NULL,
     "name" VARCHAR(100) NOT NULL,
@@ -69,16 +62,13 @@ CREATE TABLE "team" (
     CONSTRAINT "team_pkey" PRIMARY KEY ("teamid")
 );
 
--- CreateTable
 CREATE TABLE "venue" (
     "venueid" SERIAL NOT NULL,
     "name" VARCHAR(100) NOT NULL,
     "city" VARCHAR(100) NOT NULL,
 
     CONSTRAINT "venue_pkey" PRIMARY KEY ("venueid")
-);
 
--- CreateTable
 CREATE TABLE "award" (
     "awardid" SERIAL NOT NULL,
     "title" VARCHAR(100) NOT NULL,
@@ -86,34 +76,23 @@ CREATE TABLE "award" (
     "playerid" INTEGER NOT NULL,
 
     CONSTRAINT "award_pkey" PRIMARY KEY ("awardid")
-);
 
--- CreateIndex
 CREATE UNIQUE INDEX "matchset_matchid_setnumber_key" ON "matchset"("matchid", "setnumber");
 
--- CreateIndex
 CREATE UNIQUE INDEX "playermatchstat_playerid_matchid_key" ON "playermatchstat"("playerid", "matchid");
 
--- CreateIndex
 CREATE UNIQUE INDEX "team_name_key" ON "team"("name");
 
--- AddForeignKey
 ALTER TABLE "match" ADD CONSTRAINT "match_venueid_fkey" FOREIGN KEY ("venueid") REFERENCES "venue"("venueid") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
--- AddForeignKey
 ALTER TABLE "matchset" ADD CONSTRAINT "matchset_matchid_fkey" FOREIGN KEY ("matchid") REFERENCES "match"("matchid") ON DELETE CASCADE ON UPDATE NO ACTION;
 
--- AddForeignKey
 ALTER TABLE "player" ADD CONSTRAINT "player_teamid_fkey" FOREIGN KEY ("teamid") REFERENCES "team"("teamid") ON DELETE CASCADE ON UPDATE NO ACTION;
 
--- AddForeignKey
 ALTER TABLE "playermatchstat" ADD CONSTRAINT "playermatchstat_playerid_fkey" FOREIGN KEY ("playerid") REFERENCES "player"("playerid") ON DELETE CASCADE ON UPDATE NO ACTION;
 
--- AddForeignKey
 ALTER TABLE "playerphones" ADD CONSTRAINT "playerphones_playerid_fkey" FOREIGN KEY ("playerid") REFERENCES "player"("playerid") ON DELETE CASCADE ON UPDATE NO ACTION;
 
--- AddForeignKey
 ALTER TABLE "team" ADD CONSTRAINT "team_coachid_fkey" FOREIGN KEY ("coachid") REFERENCES "coach"("coachid") ON DELETE SET NULL ON UPDATE NO ACTION;
 
--- AddForeignKey
 ALTER TABLE "award" ADD CONSTRAINT "award_playerid_fkey" FOREIGN KEY ("playerid") REFERENCES "player"("playerid") ON DELETE CASCADE ON UPDATE NO ACTION;
