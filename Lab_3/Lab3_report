@@ -125,25 +125,6 @@ SELECT t.Name AS TeamName, c.LastName AS Coach FROM Team t JOIN Coach c ON t.Coa
 
 ## 3. Докази заповнення таблиць
 
-Нижче наведено частина витягу з бази даних, що підтверджують успішне виконання операцій.
-
-### Таблиця: Coach
-| CoachID | FirstName | LastName | ExperienceYears |
-| :--- | :--- | :--- | :--- |
-| 1 | Ivan | Petrenko | 10 |
-| 2 | Serhiy | Koval | 5 |
-| 3 | Oleksandr | Boyko | 8 |
-| 4 | Mykola | Shevchenko | 15 |
-| 5 | Dmytro | Sydorenko | 3 |
-
-### Таблиця: Team
-| TeamID | Name | CoachID |
-| :--- | :--- | :--- |
-| 1 | Spikers | 1 |
-| 2 | Blockers | 2 |
-| 3 | Aces | 3 |
-| 4 | Diggers | 4 |
-| 5 | Smashers | 5 |
-
+Прикріпив фото в гіт
 ---
 Висновок: В ході роботи була реалізована транзакційна модель даних для волейбольного турніру. Всі операції (SELECT, INSERT, UPDATE, DELETE) виконуються коректно, з дотриманням цілісності даних.
